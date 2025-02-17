@@ -28,17 +28,23 @@ chapters:
   - "even_more_stuff.md"
 ```
 
+List the chapters in the order you want them to appear in the book. And don't name them "Chapter 1". You'll eventually have to reorder your book chapters, and it'll be terrible. So just name things what they are and keep them ordered here.
+
 Generate chapter files:
 
 ```bash
 $ make init
 ```
 
+This makes a Markdown file from your chapter list, skipping any existing file.
+
 Build the Docker image:
 
 ```bash
 $ make build-image
 ```
+
+This takes a while. There's a lot to build.
 
 While that's building, edit the Markdown files, includuing `preface.md` with your content.
 
