@@ -1,0 +1,366 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Base Document Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass%
+[10pt] % Set default font size
+{book} % Set document Class
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% image Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+% Redefine \includegraphics so that, unless explicit options are
+% given, the image width will not exceed the width or the height of the page.
+% Images get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\ScaleWidthIfNeeded{%
+ \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\def\ScaleHeightIfNeeded{%
+  \ifdim\Gin@nat@height>0.9\textheight
+    0.9\textheight
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\setkeys{Gin}{width=\ScaleWidthIfNeeded,height=\ScaleHeightIfNeeded,keepaspectratio}%
+
+%% Handle shading
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+%% Set page size and margins
+\usepackage{geometry}
+  \geometry{
+  paperheight=9in, %actual height measurement of the page
+  paperwidth=7in, %actual width measurement of the page
+  total={90.54mm, 127mm}, % widht/height of the "text box"/text area on the page
+  top=22.352mm, % top margin
+  bottom=19.177mm, %bottom margin
+  inner=19.177mm, %inner/gutter margin
+  outer=19.177mm, %outer margin
+  }
+
+%% Set line spacing
+% 1.0 = single space
+% 1.3 = 1.5 space
+% 1.6 = double space
+\linespread{1.0}
+
+\setlength{\parindent}{0pt} % Default is 15pt.
+
+%% Set additional space between paragraphs
+\setlength{\parskip}{10pt}
+
+%% Use this package to enable tables
+\usepackage{longtable,booktabs}
+
+%% Hide the toprule
+\renewcommand{\toprule}{}
+
+%% Hide the bottomrule
+\renewcommand{\bottomrule}{}
+
+\setlength{\LTpost}{0pt}
+
+%% Set language and hyphenation rules
+\usepackage[english]{babel}
+
+%% Set encoding
+\usepackage[utf8]{inputenc}
+
+%% Enable widow/orphan control
+%\usepackage[all,defaultlines=2]{nowidow}
+\widowpenalty=10000
+\clubpenalty=10000
+
+%% Prevent overfull lines
+\setlength{\emergencystretch}{3em}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%% link styling
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=blue,
+    urlcolor=blue
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Title Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Needed for styling chapter title headings
+\usepackage{titlesec}
+
+% Turn off subsection numbering for titles
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{}
+
+%% Style the chapter title that appears on the first page of each chapter
+\titlespacing*{\chapter}
+{0pt}%left margin
+{100pt}%top margin
+{10pt}%bottom margin
+
+% This tells it to style the titleformat for chapters
+\titleformat{\chapter}[display]{\bfseries}{\small Chapter \thechapter }{0.5mm}{\Large}
+
+\titleformat{\section} {\normalfont\Large\bfseries}{\thesection}{0em}{}
+\titleformat{\subsection} {\normalfont\Large\bfseries}{\thesection}{0em}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Headers & Footers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Needed for headers and footers
+\usepackage{fancyhdr}
+
+%% Prevent headers from appearing on empty pages
+\usepackage{emptypage}
+
+%% Remove header/footer from the first page of every chapter
+\fancypagestyle{plain}{
+\fancyhf{} %remove/clear header/footer content
+\renewcommand{\headrulewidth}{0.0pt} %remove black line/"rule" from header
+}
+
+%% Set the header height in: in, mm, cm, pt
+\setlength{\headheight}{.35in}
+
+%% Set the space between header and text
+\setlength{\headsep}{.25in}
+
+%% Set the header height in: in, mm, cm, pt
+%\headheight=in
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Images
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Needed for images; used for cover
+\usepackage{incgraph,tikz}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Fonts
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Use TrueType system fonts
+\usepackage{fontspec}
+
+% tweak deafult fonts
+\usepackage{xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+\setmonofont[Mapping=tex-ansi]{DejaVu Sans Mono}
+
+
+%% Make our quotes curly
+\defaultfontfeatures{Mapping=tex-text}
+
+% box drawing characters
+% <https://tex.stackexchange.com/a/333210/6444>
+\usepackage{newunicodechar}
+\newfontfamily{\fallbackfont}{DejaVu Sans Mono}
+\DeclareTextFontCommand{\textfallback}{\fallbackfont}
+\newunicodechar{█}{\textfallback{█}}
+\newunicodechar{└}{\textfallback{└}}
+\newunicodechar{─}{\textfallback{─}}
+\newunicodechar{├}{\textfallback{├}}
+\newunicodechar{│}{\textfallback{│}}
+
+%\setmainfont
+%\setsansfont
+%\setmonofont
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Metadata Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Set Title from Yaml Metadata
+\title{$title$}
+
+%% Set subtitle if it exists in Yaml Metadata
+\def\subtitle{$subtitle$}
+
+%% Set author from Yaml Metadata
+\author{$author$}
+
+%% Set editor from Yaml Metadata
+\def\editor{$editor$}
+
+%% Set publisher from Yaml Metadata
+\def\publisher{$publisher$}
+
+%% Use the year instead of the full date
+\date{$date$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Start the document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%% Start with the frontmatter
+% These pages don't count for document page numbering
+\frontmatter
+
+% TeX 'magic' required so we can use macros/variables with @
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Create a cover page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% No headers or footers
+\pagestyle{empty}
+
+% The image
+\incgraph[documentpaper]
+[width=\paperwidth,height=\paperheight]{$cover-image$} % Fit to height
+
+
+% End the page
+\clearpage
+
+% Insert a blank page
+\newpage
+\thispagestyle{empty}
+\null
+\clearpage
+
+% Ensure the title page starts on a right-hand page
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%
+%% Create a titlepage
+%%%%%%%%%%%%%%%%%%%%%%
+% No headers/footers
+\pagestyle{empty}
+% Center everything
+  \begin{center}
+
+% Add a vertical space
+  \vspace*{3cm}
+
+% Write the Book Title
+  \makeatletter \Huge \bfseries \textbf{\textsc{\@title}} \par \makeatother
+
+% Add a vertical space
+  \vspace{1cm}
+
+% Write the subtitle
+  \Large \makeatletter \subtitle \makeatother \par
+
+% Add a vertical space
+  \vspace{3cm}
+
+% Write the author name
+  \Large \makeatletter \MakeUppercase\@author \makeatother \par
+
+% Stop centering everythign
+  \end{center}
+
+% End the page
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create a copyright page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% No headers/footers
+\pagestyle{empty}
+
+% Center everything
+  \begin{center}
+
+% Write the Book Titlecopyright page
+  \makeatletter  \scriptsize \@title \par \makeatother
+
+% Add a vertical space
+    \vspace{0.3cm}
+
+    \makeatletter \subtitle \makeatother \par
+
+% Add a vertical space
+    \vspace{0.3cm}
+
+% Write what country it was published in
+    \scriptsize Published in the United States by \publisher \par
+
+% Add a vertical space
+    \vspace{0.3cm}
+
+    \scriptsize The author made every effort to ensure this book is accurate. However, the author, publisher, editor, and reviewers are not responsible for any technical issues that arise, or for any damages that may result in any of the information in this book.\par
+
+% Write the CC logo, year, and author
+    \scriptsize Copyright \textcopyright \makeatletter \@date \ \@author \makeatother \par
+    \scriptsize All rights reserved. No part of this publication may be reproduced, stored in a retrieval system, or transmitted, in any form, or by any means, electronic, mechanical, photocopying, recording, or otherwise, without the prior consent of the author. \par
+
+% Stop centering everythign
+  \end{center}
+
+% Add a vertical space
+    \vspace{.3cm}
+
+% Start centering again
+    \begin{center}
+
+    \scriptsize Edited by \editor \par
+
+% Add a vertical space
+      \vspace{0.3cm}
+
+% Stop centering
+    \end{center}
+
+% End the page
+\clearpage \normalsize
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Table of Contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+
+% End the page
+\clearpage \normalsize
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% frontmatter contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+$for(include-before)$
+$include-before$
+$endfor$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the chapters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This styles the header/footer for normal 'chapter' pages
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter \hspace{1mm}-\hspace{1mm}{#1}}{}}
+
+\fancyfoot[C]{} % remove numbered footers
+\fancyhead[RO,LE]{\bfseries \thepage} % add page numbers to the header
+\fancyhead[LO]{\bfseries \textsc \leftmark} % add subtitle to header
+\fancyhead[RE]{\bfseries \textsc \@title}
+\renewcommand{\headrulewidth}{0.0pt}
+
+
+% This says to start the page numbering
+\mainmatter
+
+% Write the body/chapters
+$body$
+
+% Backmatter
+
+$for(include-after)$
+$include-after$
+$endfor$
+
+% End the document
+\end{document}

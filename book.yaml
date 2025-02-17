@@ -1,0 +1,13 @@
+title: "My Book"
+subtitle: "My Subtitle"
+author: "Some Author"
+version: "1.0"
+cover-image: "images/cover.jpg"
+lang: "en"
+date: "2025"
+publisher: "Open Source Press"
+editor: "Some Editor"
+chapters:
+  - "get_started.md"
+  - "doing_more_stuff.md"
+  - "even_more_stuff.md"

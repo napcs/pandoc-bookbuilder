@@ -1,0 +1,5 @@
+preface.tex
+*.pdf
+*.epub
+*.log
+.DS_Store
