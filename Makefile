@@ -1,3 +1,5 @@
+.NOTPARALLEL:
+
 DOCKER_IMAGE=book-builder
 BOOK_MANIFEST=book.yaml
 
@@ -13,22 +15,33 @@ epub: ensure-chapters
 		--toc-depth=1 \
 		--metadata-file=$(BOOK_MANIFEST) \
 		--variable subparagraph \
-	  -f gfm+footnotes \
-	  -t epub3 \
-	  -o book.epub \
+		-f gfm+footnotes \
+		-t epub3 \
+		-o book.epub \
 		preface.md \
-	$(CHAPTERS)
+		$(CHAPTERS) \
+		appendix.md
 
-pdf: preface.tex book.pdf
+.PHONY: pdf
+pdf: book.pdf
 
 # Generate the preface.tex file
 preface.tex: preface.md
 	@docker run --rm -v "$(PWD)":/book $(DOCKER_IMAGE) pandoc \
-	  -f gfm+footnotes \
+		-f gfm+footnotes \
 		-t latex \
-	  -o preface.tex \
-	  --top-level-division=chapter \
-	  preface.md
+		-o preface.tex \
+		--top-level-division=chapter \
+		preface.md
+
+# Generate the appendix.tex file
+appendix.tex: appendix.md
+	@docker run --rm -v "$(PWD)":/book $(DOCKER_IMAGE) pandoc \
+		-f gfm+footnotes \
+		-t latex \
+		-o appendix.tex \
+		--top-level-division=chapter \
+		appendix.md
 
 # Ensure all chapter files exist before building the book
 .PHONY: ensure-chapters
@@ -41,24 +54,25 @@ ensure-chapters:
 	done
 
 # Generate the full PDF
-book.pdf: ensure-chapters preface.tex
+book.pdf: ensure-chapters preface.tex appendix.tex
 	@docker run --rm -v "$(PWD)":/book $(DOCKER_IMAGE) pandoc -s \
 		--pdf-engine=xelatex \
 		--template=tex/pdf.tex \
-	  --top-level-division=chapter \
+		--top-level-division=chapter \
 		--toc \
 		--toc-depth=1 \
 		--metadata-file=$(BOOK_MANIFEST) \
 		--variable subparagraph \
-	  -f gfm+footnotes \
-	  -t latex \
+		-f gfm+footnotes \
+		-t latex \
 		-o book.pdf \
 		--include-before-body preface.tex \
+		--include-after-body appendix.tex \
 		$(CHAPTERS)
 
 # Clean up generated files
 clean:
-	@rm -f preface.tex book.pdf book.epub
+	@rm -f *.tex book.pdf book.epub
 
 init:
 	@for chapter in $(CHAPTERS); do \

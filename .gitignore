@@ -1,5 +1,9 @@
 preface.tex
+appendix.tex
 *.pdf
 *.epub
 *.log
 .DS_Store
+get_started.md
+doing_more_stuff.md
+even_more_stuff.md

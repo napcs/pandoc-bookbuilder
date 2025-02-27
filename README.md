@@ -62,6 +62,18 @@ Make an epub
 $ make epub
 ```
 
+## Front and Back Matter
+
+In traditional books, things like acknowledgements, a preface, and a foreword go in "front matter". These sections don't get chapter numbers and aren't typically given normal page numbers.
+
+`preface.md` is included in the build as front matter for PDFs.
+
+Appendices, advertisements, and indexes are "back matter."
+
+`appendix.md` is included in the build as back matter for PDFs.
+
+Pandoc requires these files to be added separately as raw TeX files, so you will find tasks in the Makefile for both. If you want to add more chapters to front or back matter you will need to adjust the Makefile rules.
+
 ## Customizing Your Book
 
 You'll find the book template for PDFs in the `tex/` folder. What's there is based off of Pandoc's built-in ebook template and modified.
@@ -69,3 +81,22 @@ You'll find the book template for PDFs in the `tex/` folder. What's there is bas
 Epubs use the normal Pandoc template that's built-in. Right now there's no tex templating for that. That'll come later.
 
 The extended fonts are commented out in the Dockerfile because it adds a ton of files. The image is already 2GB in size. Fonts make it almost 5GB.
+
+## Known issues
+
+Since this runs in containers, there may be a file system synchronization issue on some systems where the preface and appendix fail with the error:
+
+```
+pandoc: preface.tex: withFile: does not exist (No such file or directory)
+```
+
+Run the build again and it will work.
+
+## Changes
+
+### 2025-02-26
+- Added `appendix.md` to the repository.
+- Support for backmatter properly implemented in `tex/pdf.tex`.
+- Improved body text and heading spacing in `tex/pdf.tex`.
+- PDF Code blocks are now shaded in `tex/pdf.tex`.
+- Removed unused `tex/frontmatter.tex` file.

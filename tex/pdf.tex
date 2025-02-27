@@ -2,7 +2,7 @@
 %%%%%% Base Document Settings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass%
-[10pt] % Set default font size
+[12pt] % Set default font size
 {book} % Set document Class
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,7 +53,7 @@ $endif$
 % 1.0 = single space
 % 1.3 = 1.5 space
 % 1.6 = double space
-\linespread{1.0}
+\linespread{1.1}
 
 \setlength{\parindent}{0pt} % Default is 15pt.
 
@@ -116,6 +116,88 @@ $endif$
 
 \titleformat{\section} {\normalfont\Large\bfseries}{\thesection}{0em}{}
 \titleformat{\subsection} {\normalfont\Large\bfseries}{\thesection}{0em}{}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% headings and subheadings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlespacing*{\section}
+{0pt}%left margin
+{12pt}%top margin
+{6pt}%bottom margin
+
+\titlespacing*{\subsection}
+{0pt}%left margin
+{12pt}%top margin
+{6pt}%bottom margin
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Code Block Styling
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+\usepackage{mdframed}
+\usepackage{etoolbox}
+
+% Define colors for code blocks
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{codeborder}{RGB}{200,200,200}
+
+% Check if Shaded environment exists before defining it
+\makeatletter
+\@ifundefined{Shaded}{
+  \newenvironment{Shaded}{}{}
+}{}
+\@ifundefined{Highlighting}{
+  \newenvironment{Highlighting}{}{}
+}{}
+\makeatother
+
+% Style for code blocks - using mdframed
+\newmdenv[
+  backgroundcolor=codebg,
+  linecolor=codeborder,
+  linewidth=0.5pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+  innertopmargin=10pt,
+  innerbottommargin=-2pt,
+  skipabove=10pt,
+  skipbelow=10pt
+]{codeframe}
+
+% Redefine the Shaded environment to use our styled frame
+\renewenvironment{Shaded}{
+  \begin{codeframe}
+  \normalfont\color{black}
+}{
+  \end{codeframe}
+}
+
+% Style for verbatim environments (used for code blocks without language)
+\RecustomVerbatimEnvironment{Verbatim}{Verbatim}{
+  frame=single,
+  framerule=0.5pt,
+  rulecolor=\color{codeborder},
+  fillcolor=\color{codebg},
+  framesep=10pt,
+  formatcom={\colorbox{codebg}{\phantom{\linewidth}\llap{\color{black}}}}
+}
+
+% Also style the standard verbatim environment
+\let\oldverbatim=\verbatim
+\let\oldendverbatim=\endverbatim
+\renewenvironment{verbatim}{
+  \begin{codeframe}
+  \oldverbatim
+}{
+  \oldendverbatim
+  \end{codeframe}
+}
+
+% Force text color back to black after code blocks
+\AtEndEnvironment{Shaded}{{\normalfont\normalcolor}}
+\AtEndEnvironment{verbatim}{{\normalfont\normalcolor}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Headers & Footers
@@ -319,7 +401,6 @@ $endif$
 % End the page
 \clearpage \normalsize
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Table of Contents
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -357,7 +438,11 @@ $endfor$
 $body$
 
 % Backmatter
+\backmatter
+\cleardoublepage
+\pagestyle{empty}
 
+\appendix  % This transforms subsequent chapters into appendices
 $for(include-after)$
 $include-after$
 $endfor$
